@@ -41,6 +41,11 @@ function draw() {
   }
 
   background(127);
+
+  //draw the weights
+  drawWeights(nn.input_nodes, nn.hidden_nodes, 1, 2);
+  drawWeights(nn.hidden_nodes, nn.output_nodes, 2, 3);
+  stroke(0);
   //draw the nodes
   drawNodes(nn.input_nodes, 1, 'rgb(255,100,150)', 20, [10,10]);
   drawNodes(nn.hidden_nodes, 2, 'rgb(100,150,255)', 20, nn.bias_h.data);
@@ -60,6 +65,17 @@ function draw() {
     }  
 }
 
+function drawWeights(nodes1, nodes2, l1, l2) {
+  //console.table(data);
+  for (var i = 0; i < nodes1; i++) {
+    for (var j = 0; j < nodes2; j++){
+      var orig = getCoords(nodes1, i, l1);
+      var dest = getCoords(nodes2, j, l2);
+      stroke(255);
+      line(orig.x, orig.y, dest.x, dest.y);
+    }
+  }
+}
 
 function drawNodes(node_count, layer, colour, r, data) {
   for (var n = 0; n < node_count; n++) {
