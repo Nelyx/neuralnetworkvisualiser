@@ -42,9 +42,9 @@ function draw() {
 
   background(127);
   //draw the nodes
-  drawNodes(nn.input_nodes, 1, 'rgb(255,100,150)', 20);
-  drawNodes(nn.hidden_nodes, 2, 'rgb(100,150,255)', 20);
-  drawNodes(nn.output_nodes, 3, 'rgb(100,255,150)', 20);
+  drawNodes(nn.input_nodes, 1, 'rgb(255,100,150)', 20, [10,10]);
+  drawNodes(nn.hidden_nodes, 2, 'rgb(100,150,255)', 20, nn.bias_h.data);
+  drawNodes(nn.output_nodes, 3, 'rgb(100,255,150)', 20, nn.bias_o.data);
 
 
     //output the current probability space.
@@ -64,8 +64,9 @@ function draw() {
 function drawNodes(node_count, layer, colour, r, data) {
   for (var n = 0; n < node_count; n++) {
     var coords = getCoords(node_count, n, layer);
+    var size = r * map(data[n], -20,20,0,2);
     fill(colour);
-    ellipse(coords.x, coords.y ,r,r);
+    ellipse(coords.x, coords.y ,size,size);
   }
 }
 
