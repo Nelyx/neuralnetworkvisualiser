@@ -71,11 +71,17 @@ function drawWeights(nodes1, nodes2, l1, l2, data) {
     for (var j = 0; j < nodes2; j++){
       var orig = getCoords(nodes1, i, l1);
       var dest = getCoords(nodes2, j, l2);
-      var w = map(data[j][i],-10,10,0,255);
-      stroke(w);
+      var weight = data[j][i];
+
+      var width = map(abs(weight),0,20,1,5);
+      var red = map(weight,0,-20,0,255);
+      var green = map(weight,0,20,0,255); 
+      stroke(red, green, 0);
+      strokeWeight(width);
       line(orig.x, orig.y, dest.x, dest.y);
     }
   }
+  strokeWeight(1);
 }
 
 function drawNodes(node_count, layer, colour, r, data) {
