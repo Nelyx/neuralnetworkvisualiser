@@ -1,43 +1,121 @@
 var nn;
 
-var training_data_or = [
-  { inputs : [0,0], outputs: [0]},
-  { inputs : [0,1], outputs: [1]},
-  { inputs : [1,0], outputs: [1]},
-  { inputs : [1,1], outputs: [1]},
-];
+var training_data_or = {
+  name: "OR Training Data",
+  inputs: 2,
+  outputs: 1,
+  data: [
+    { inputs : [0,0], outputs: [0]},
+    { inputs : [0,1], outputs: [1]},
+    { inputs : [1,0], outputs: [1]},
+    { inputs : [1,1], outputs: [1]},
+  ]
+}
+;
 
-var training_data_and = [
+var training_data_and = {
+  name: "AND Training Data",
+  inputs: 2,
+  outputs: 1,
+  data: [
   { inputs : [0,0], outputs: [0]},
   { inputs : [0,1], outputs: [0]},
   { inputs : [1,0], outputs: [0]},
   { inputs : [1,1], outputs: [1]},
-];
+  ]
+};
 
-var training_data_xor = [
+var training_data_xor = {
+  name: "XOR Training Data",
+  inputs: 2,
+  outputs: 1,
+  data: [
   { inputs : [0,0], outputs: [0]},
   { inputs : [0,1], outputs: [1]},
   { inputs : [1,0], outputs: [1]},
   { inputs : [1,1], outputs: [0]},
-];
+  ]
+};
+
+
+var training_data_xor = {
+  name: "XOR Training Data",
+  inputs: 2,
+  outputs: 1,
+  data: [
+  { inputs : [0,0], outputs: [0]},
+  { inputs : [0,1], outputs: [1]},
+  { inputs : [1,0], outputs: [1]},
+  { inputs : [1,1], outputs: [0]},
+  ]
+};
+
+var training_data_xor = {
+  name: "XOR Training Data",
+  inputs: 2,
+  outputs: 1,
+  data: [
+  { inputs : [0,0], outputs: [0]},
+  { inputs : [0,1], outputs: [1]},
+  { inputs : [1,0], outputs: [1]},
+  { inputs : [1,1], outputs: [0]},
+  ]
+};
+
+var training_data_rot = {
+  name: "Weird Rotate Training Data",
+  inputs: 2,
+  outputs: 2,
+  data: [
+  { inputs : [0,0], outputs: [0,0]},
+  { inputs : [0,1], outputs: [1,0]},
+  { inputs : [1,0], outputs: [0,1]},
+  { inputs : [1,1], outputs: [1,1]},
+  ]
+};
+
+var training_data_roter = {
+  name: "Weirder Rotate Training Data",
+  inputs: 2,
+  outputs: 3,
+  data: [
+  { inputs : [0,0],     outputs: [0,0,0]},
+  { inputs : [0,1],     outputs: [1,0,0]},
+  { inputs : [0.5,0.5], outputs: [0,1,0]},
+  { inputs : [1,0],     outputs: [0,0,0]},
+  { inputs : [1,1],     outputs: [1,1,0]},
+  ]
+};
+
 
 
 var res = 20;
 var cols, rows;
+var training_data;
+var hidden_nodes =5;
 
 function setup() {
+  training_data = training_data_xor;
+
+  console.log(training_data.name);
+  nn = new NeuralNetwork(
+    training_data.inputs, 
+    hidden_nodes, 
+    training_data.outputs);
+  
+  
   createCanvas(800,400);
-  nn = new NeuralNetwork(2,4,1);
   cols = width / 2 / res;
   rows = height / res;
 }
 
 function draw() {
-  var training_data = training_data_xor;
+
 
   for (var i = 0; i < 1000; i++) {
-    var data = random(training_data);
-    nn.train(data.inputs, data.outputs);
+    //training_data.data.forEach(e => nn.train(e.inputs, e.outputs));
+    var e = random(training_data.data);
+    nn.train(e.inputs, e.outputs)
   }
 
   background(127);
@@ -59,7 +137,10 @@ function draw() {
         var input1 = i/cols;
         var input2 = j/rows;
         var output = nn.predict([input1, input2]);
-        fill(output * 255);
+        var r = output[0] * 255;
+        var g = output[1] * 255 || r;
+        var b = output[2] * 255 || r;
+        fill(r,g,b);
         rect((width / 2) + i * res, j * res, res, res);
       }
     }  
@@ -74,9 +155,9 @@ function drawWeights(nodes1, nodes2, l1, l2, data) {
       var weight = data[j][i];
 
       var width = map(abs(weight),0,20,1,5);
-      var red = map(weight,0,-20,0,255);
-      var green = map(weight,0,20,0,255); 
-      stroke(red, green, 0);
+      var red = map(weight,0,-20,100,255);
+      var green = map(weight,0,20,100,255); 
+      stroke(red, green, 100);
       strokeWeight(width);
       line(orig.x, orig.y, dest.x, dest.y);
     }
