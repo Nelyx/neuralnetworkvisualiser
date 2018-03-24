@@ -43,8 +43,8 @@ function draw() {
   background(127);
 
   //draw the weights
-  drawWeights(nn.input_nodes, nn.hidden_nodes, 1, 2);
-  drawWeights(nn.hidden_nodes, nn.output_nodes, 2, 3);
+  drawWeights(nn.input_nodes, nn.hidden_nodes, 1, 2, nn.weights_ih.data);
+  drawWeights(nn.hidden_nodes, nn.output_nodes, 2, 3, nn.weights_ho.data);
   stroke(0);
   //draw the nodes
   drawNodes(nn.input_nodes, 1, 'rgb(255,100,150)', 20, [10,10]);
@@ -65,13 +65,14 @@ function draw() {
     }  
 }
 
-function drawWeights(nodes1, nodes2, l1, l2) {
+function drawWeights(nodes1, nodes2, l1, l2, data) {
   //console.table(data);
   for (var i = 0; i < nodes1; i++) {
     for (var j = 0; j < nodes2; j++){
       var orig = getCoords(nodes1, i, l1);
       var dest = getCoords(nodes2, j, l2);
-      stroke(255);
+      var w = map(data[j][i],-10,10,0,255);
+      stroke(w);
       line(orig.x, orig.y, dest.x, dest.y);
     }
   }
@@ -87,7 +88,7 @@ function drawNodes(node_count, layer, colour, r, data) {
 }
 
 function getCoords(node_count, node, layer){
-  //input columns should be 1/4 into the last half of the canvas.
+  //input columns should be 1/4 into the first half of the canvas.
   var x = width / 8 * layer;
   var y = (height / (node_count+1)) * (node+1)
   return {x: x, y: y};
