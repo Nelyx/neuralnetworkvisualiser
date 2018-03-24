@@ -39,5 +39,17 @@ function draw() {
     var data = random(training_data);
     nn.train(data.inputs, data.outputs);
   }
-  
+
+
+    //output the current probability space.
+    for (var j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) {
+      
+        var input1 = i/cols;
+        var input2 = j/rows;
+        var output = nn.predict([input1, input2]);
+        fill(output * 255);
+        rect((width / 2) + i * res, j * res, res, res);
+      }
+    }  
 }
