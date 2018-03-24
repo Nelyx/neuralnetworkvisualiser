@@ -40,6 +40,12 @@ function draw() {
     nn.train(data.inputs, data.outputs);
   }
 
+  background(127);
+  //draw the nodes
+  drawNodes(nn.input_nodes, 1, 'rgb(255,100,150)', 20);
+  drawNodes(nn.hidden_nodes, 2, 'rgb(100,150,255)', 20);
+  drawNodes(nn.output_nodes, 3, 'rgb(100,255,150)', 20);
+
 
     //output the current probability space.
     for (var j = 0; j < rows; j++) {
@@ -52,4 +58,20 @@ function draw() {
         rect((width / 2) + i * res, j * res, res, res);
       }
     }  
+}
+
+
+function drawNodes(node_count, layer, colour, r, data) {
+  for (var n = 0; n < node_count; n++) {
+    var coords = getCoords(node_count, n, layer);
+    fill(colour);
+    ellipse(coords.x, coords.y ,r,r);
+  }
+}
+
+function getCoords(node_count, node, layer){
+  //input columns should be 1/4 into the last half of the canvas.
+  var x = width / 8 * layer;
+  var y = (height / (node_count+1)) * (node+1)
+  return {x: x, y: y};
 }
